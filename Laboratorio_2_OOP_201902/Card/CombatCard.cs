@@ -30,7 +30,7 @@ namespace Laboratorio_2_OOP_201902
             set
             {
                 this.attackPoints = value;
-            }
+            }   
         }
         public bool Hero
         { get
