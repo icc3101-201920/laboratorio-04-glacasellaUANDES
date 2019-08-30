@@ -6,10 +6,9 @@ namespace Laboratorio_2_OOP_201902
     {
         static void Main(string[] args)
         {
-            Player player1 = new Player();
-            Player player2 = new Player();
-            Console.WriteLine(player1.Id + 1);
-            Console.WriteLine(player2.Id + 1);
+            Game miJuego = new Game();
+            miJuego.agregarCartasALosMazos(); 
+            miJuego.mostrarCartas();
 
             
         }

@@ -27,7 +27,7 @@ namespace Laboratorio_2_OOP_201902
             Name = name;
             Type = type;
             Effect = effect;
-            BuffType = null;
+            BuffType =null;
         }
 
         //Propiedades

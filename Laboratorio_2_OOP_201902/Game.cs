@@ -11,12 +11,20 @@ namespace Laboratorio_2_OOP_201902
         //Atributos
         private Player[] players;
         private Player activePlayer;
-        private List<Deck> decks;
         private Board boardGame;
         private bool endGame;
 
-        
 
+        // ------------------ATRIBUTOS QUE SE PIDEN EN EL LAB----------------------------------
+        // Atributo decks es una lista de mazos. En el hay 2 decks, uno para cada jugador
+        private List<Deck> decks;
+        // Atributo captainCards es una lista de cartas de tipo capitan
+        private List<SpecialCard> captainCards;
+        // ------------------------------------------------------------------------------------
+
+
+
+        // -----------------MODIFIQUE EL CONSTRUCTOR COMO SE PIDE EN EL LAB -------------------
         //Constructor
         public Game()
         {
@@ -25,14 +33,24 @@ namespace Laboratorio_2_OOP_201902
             ActivePlayer = players[random.Next(0, 2)];
             boardGame = new Board();
             EndGame = false;
-            // Accedemos a la lista de cartas de cada jugador
-            Deck DP1 = players[0].Deck;
-            Deck DP2 = players[1].Deck;
-            // Agregamos los decks a la lista de decks
-            this.decks.Add(DP1);
-            this.decks.Add(DP2);
-        }
 
+            // Cada deck tiene sus cartas
+            // Creamos una nueva lista de decks
+            List<Deck> decks = new List<Deck>();
+            this.decks = decks;
+
+            Deck deckJ1 = new Deck();
+            Deck deckJ2 = new Deck();
+            decks.Add(deckJ1);
+            decks.Add(deckJ2);
+
+        }
+        // ---------------------------------------------------------------------------------------
+
+
+
+
+        // -------------------------- ESTO NO SE PIDE, ES DEL CODIGO ANTERIOR ------------------------
         //Propiedades
         public Player[] Players
         {
@@ -105,12 +123,12 @@ namespace Laboratorio_2_OOP_201902
         {
             throw new NotImplementedException();
         }
+        // ---------------------------------------------------------------------------------
 
 
 
-
-        // Metodos que se piden en el laboratorio
-        public void agregarCartasAlArchivo()
+        // ---------------------------- METODOS QUE SE PIDEN EN EL LAB ---------------------------------
+        public void agregarCartasALosMazos()
         {
             // Buscamos la ruta hacia Decks.txt
             string path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.
@@ -119,15 +137,88 @@ namespace Laboratorio_2_OOP_201902
             // Abrimos el archivo para leer de el
             StreamReader reader = new StreamReader(path);
 
-            // Leemos la primera linea
+            // Leemos la primera linea. En este caso, line guarda "START"
             string line = reader.ReadLine();
-            // Mientras no lleguemos al final del deck, vamos agregando cartas
-            while (line != "END")
-            {
+            // Creamos una lista de cartas para guardarlas todas
+            List<Card> aux = new List<Card>();
 
+            // Mientras no lleguemos al final del deck, vamos agregando cartas
+            while (true)
+            {
+                // line ahora guarda la primera linea que realmente es una carta
                 line = reader.ReadLine();
+                if (line == "END")
+                {
+                    break;
+                }
+                // Separado es un array donde se guardan en cada valor las caracteristica de la carta
+                string[] separado = line.Split(",");
+                if (separado[0] == "CombatCard")
+                {
+                    CombatCard nuevaCarta = new CombatCard(separado[1], separado[2],separado[3], int.Parse(separado[4]), bool.Parse(separado[5]));
+                    aux.Add(nuevaCarta);
+                }
+                else
+                {
+                    SpecialCard nuevaCarta = new SpecialCard(separado[1], separado[2], separado[3]);
+                    aux.Add(nuevaCarta);
+                }
             }
+
+            // Agregamos las cartas al deck 0 (del jugador 1)
+            decks[0].Cards = aux;
+
+            // Reiniciamos el string line
+            line = "";
+            List<Card> aux2 = new List<Card>();
+            // Ahora line es START
+            line = reader.ReadLine();
+
+            while (true)
+            {
+                // line ahora guarda la primera linea que realmente es una carta
+                line = reader.ReadLine();
+                if (line == "END")
+                {
+                    break;
+                }
+                // Separado es un array donde se guardan en cada valor las caracteristica de la carta
+                string[] separado = line.Split(",");
+                // Dependiendo de la clase creamos una carta u otra
+                if (separado[0] == "CombatCard")
+                {
+                    // Creamos la carta y la agregamos a la lista
+                    CombatCard nuevaCarta = new CombatCard(separado[1], separado[2], separado[3], int.Parse(separado[4]), bool.Parse(separado[5]));
+                    aux2.Add(nuevaCarta);
+                }
+                else
+                {
+                    SpecialCard nuevaCarta = new SpecialCard(separado[1], separado[2], separado[3]);
+                    aux2.Add(nuevaCarta);
+                }
+            }
+
+            // Agregamos las cartas al deck 1 (del jugador 2)
+            decks[1].Cards = aux2;
+
+            // Ya podemos cerrar el archivo
             reader.Close();
         }
+
+
+        // Metodo que hice para verificar que las cartas se estaban agregando correctamente a los decks
+        // Si quieres pruebalo, muestra el name y el type de todas las special y combat card del archivo
+        public void mostrarCartas()
+        {
+            foreach (Deck deck in decks)
+            {
+                foreach (Card card in deck.Cards)
+                {
+                    Console.WriteLine($"{card.Name}, {card.Type}");
+                }
+            }
+        }
+
+
     }
 }
