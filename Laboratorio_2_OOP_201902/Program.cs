@@ -7,10 +7,7 @@ namespace Laboratorio_2_OOP_201902
         static void Main(string[] args)
         {
             Game miJuego = new Game();
-            miJuego.agregarCartasALosMazos(); 
-            miJuego.mostrarCartas();
-
-            
+            miJuego.agregarCapitanes();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Laboratorio_2_OOP_201902;
+using Laboratorio_2_OOP_201902.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,12 +14,12 @@ namespace Laboratorio_2_OOP_201902
         //Atributos
         
 
-        private Dictionary<string, List<Card>>[] playerCards;
+        private Dictionary<EnumType, List<Card>>[] playerCards;
 
         private List<SpecialCard> weatherCards;
 
         //Propiedades
-        public Dictionary<string, List<Card>>[] PlayerCards { get => this.playerCards; set => this.playerCards = value; }
+        public Dictionary<EnumType, List<Card>>[] PlayerCards { get => this.playerCards; set => this.playerCards = value; }
 
         public List<SpecialCard> WeatherCards
         {
@@ -33,15 +34,14 @@ namespace Laboratorio_2_OOP_201902
         public Board()
         {
             this.weatherCards = new List<SpecialCard>();
-            this.playerCards = new Dictionary<string, List<Card>>[
-            DEFAULT_NUMBER_OF_PLAYERS]; //Inicializa el arreglo de diccionarios.
-            this.playerCards[0] = new Dictionary<string, List<Card>>(); // Inicializa los diccionarios.
-            this.playerCards[1] = new Dictionary<string, List<Card>>(); // Inicializa los diccionarios.
+            this.playerCards = new Dictionary<EnumType, List<Card>>[DEFAULT_NUMBER_OF_PLAYERS]; //Inicializa el arreglo de diccionarios.
+            this.playerCards[0] = new Dictionary<EnumType, List<Card>>(); // Inicializa los diccionarios.
+            this.playerCards[1] = new Dictionary<EnumType, List<Card>>(); // Inicializa los diccionarios.
         }
 
 
         //Metodos
-        public void AddCard(Card card, int playerId = -1, string buffType = null)
+        public void AddCard(Card card, int playerId = -1)
         {
             //Revisar si la carta recibida en el parmetro es Combat o Special
             if (card.GetType().Name == nameof(CombatCard))
@@ -82,14 +82,14 @@ namespace Laboratorio_2_OOP_201902
                     {
                         // Revisamos si el diccionario ya contiene el key. Como dice el enunciado,
                         // si contiene el key no dejamos que agregue la carta
-                        if (playerCards[playerId].ContainsKey("captain"))
+                        if (playerCards[playerId].ContainsKey(EnumType.captain))
                         {
                             throw new Exception("El jugador ya tiene una carta captain");
                         }
                         // Si no, le agregamos el capitan. De esta forma el capitan se agrega una sola vez durante el juego
                         else
                         {
-                            playerCards[playerId].Add("captain", new List<Card>() { card });
+                            playerCards[playerId].Add(EnumType.captain, new List<Card>() { card });
                         }
                     }
                     else
@@ -104,14 +104,14 @@ namespace Laboratorio_2_OOP_201902
                     if (playerId == 0 || playerId == 1)
                     {
                         // Si ya tiene el player card, tiramos un exception
-                        if (playerCards[playerId].ContainsKey("buffer" + buffType))
+                        if (playerCards[playerId].ContainsKey(EnumType.buff))
                         {
                             throw new Exception("No se puede agregar la carta");
                         }
                         // SI no, agregamos la carta
                         else
                         {
-                            playerCards[playerId].Add("buffer", new List<Card>() { card });
+                            playerCards[playerId].Add(EnumType.buff, new List<Card>() { card });
                         }
                     }
                     else
@@ -123,7 +123,7 @@ namespace Laboratorio_2_OOP_201902
                 {
                     if (playerId == 0 || playerId == 1)
                     {
-                        playerCards[playerId]["weather"].Add(card);
+                        playerCards[playerId][EnumType.weather].Add(card);
                     }
                     else
                     {
@@ -138,25 +138,25 @@ namespace Laboratorio_2_OOP_201902
             //Guardar las cartas de capitan en una variable temporal
             List<Card>[] captainCards = new List<Card>[DEFAULT_NUMBER_OF_PLAYERS]
             {
-                new List<Card>(playerCards[0]["captain"]),
-                new List<Card>(playerCards[1]["captain"])
+                new List<Card>(playerCards[0][EnumType.captain]),
+                new List<Card>(playerCards[1][EnumType.captain])
             };
 
             //Destruir todas las cartas
             // Recorremos todas las entrys de los diccionarios de cada jugador y limpiamos las listas
-            foreach (KeyValuePair<string, List<Card>> entry in playerCards[0])
+            foreach (KeyValuePair<EnumType, List<Card>> entry in playerCards[0])
             {
                 entry.Value.Clear();
             }
 
-            foreach (KeyValuePair<string, List<Card>> entry in playerCards[1])
+            foreach (KeyValuePair<EnumType, List<Card>> entry in playerCards[1])
             {
                 entry.Value.Clear();
             }
 
             //Agregar nuevamente los capitanes
-            playerCards[0]["captain"] = captainCards[0];
-            playerCards[1]["captain"] = captainCards[1];
+            playerCards[0][EnumType.captain] = captainCards[0];
+            playerCards[1][EnumType.captain] = captainCards[1];
         }
     }
 }

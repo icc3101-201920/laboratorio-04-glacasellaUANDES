@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Laboratorio_2_OOP_201902.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,7 +12,7 @@ namespace Laboratorio_2_OOP_201902
         private bool hero;
 
         //Constructor
-        public CombatCard(string name, string type, string effect, int attackPoints, bool hero)
+        public CombatCard(string name, EnumType type, string effect, int attackPoints, bool hero)
         {
             Name = name;
             Type = type;
@@ -55,7 +56,8 @@ namespace Laboratorio_2_OOP_201902
                 this.name = value;
             }
         }
-        public override string Type
+
+        public override EnumType Type
         {
             get
             {

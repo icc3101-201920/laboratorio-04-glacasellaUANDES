@@ -1,4 +1,5 @@
 ﻿using Laboratorio_2_OOP_201902;
+using Laboratorio_2_OOP_201902.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,6 +44,8 @@ namespace Laboratorio_2_OOP_201902
             Deck deckJ2 = new Deck();
             decks.Add(deckJ1);
             decks.Add(deckJ2);
+
+            this.captainCards = new List<SpecialCard>();
 
         }
         // ---------------------------------------------------------------------------------------
@@ -155,12 +158,12 @@ namespace Laboratorio_2_OOP_201902
                 string[] separado = line.Split(",");
                 if (separado[0] == "CombatCard")
                 {
-                    CombatCard nuevaCarta = new CombatCard(separado[1], separado[2],separado[3], int.Parse(separado[4]), bool.Parse(separado[5]));
+                    CombatCard nuevaCarta = new CombatCard(separado[1], (EnumType)Enum.Parse(typeof(EnumType), separado[2]),separado[3], int.Parse(separado[4]), bool.Parse(separado[5]));
                     aux.Add(nuevaCarta);
                 }
                 else
                 {
-                    SpecialCard nuevaCarta = new SpecialCard(separado[1], separado[2], separado[3]);
+                    SpecialCard nuevaCarta = new SpecialCard(separado[1], (EnumType)Enum.Parse(typeof(EnumType), separado[2]), separado[3]);
                     aux.Add(nuevaCarta);
                 }
             }
@@ -188,12 +191,12 @@ namespace Laboratorio_2_OOP_201902
                 if (separado[0] == "CombatCard")
                 {
                     // Creamos la carta y la agregamos a la lista
-                    CombatCard nuevaCarta = new CombatCard(separado[1], separado[2], separado[3], int.Parse(separado[4]), bool.Parse(separado[5]));
+                    CombatCard nuevaCarta = new CombatCard(separado[1], (EnumType)Enum.Parse(typeof(EnumType), separado[2]), separado[3], int.Parse(separado[4]), bool.Parse(separado[5]));
                     aux2.Add(nuevaCarta);
                 }
                 else
                 {
-                    SpecialCard nuevaCarta = new SpecialCard(separado[1], separado[2], separado[3]);
+                    SpecialCard nuevaCarta = new SpecialCard(separado[1], (EnumType)Enum.Parse(typeof(EnumType), separado[2]), separado[3]);
                     aux2.Add(nuevaCarta);
                 }
             }
@@ -219,6 +222,29 @@ namespace Laboratorio_2_OOP_201902
             }
         }
 
+
+        public void agregarCapitanes()
+        {
+            // Buscamos la ruta hacia Decks.txt
+            string path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.
+            Parent.FullName + @"\Files\Captains.txt";
+
+            // Abrimos el archivo para leer de el
+            StreamReader reader = new StreamReader(path);
+
+
+            while (!reader.EndOfStream)
+            {
+                string line = reader.ReadLine();
+                string[] aux = line.Split(",");
+                captainCards.Add(new SpecialCard(aux[1], (EnumType)Enum.Parse(typeof(EnumType), aux[2]), aux[3]));
+                Console.WriteLine(line);
+            }
+            reader.Close();
+
+        }
+
+        // ------------------------------------------------------------------------------------------------------------
 
     }
 }

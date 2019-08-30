@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Laboratorio_2_OOP_201902.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,12 +9,12 @@ namespace Laboratorio_2_OOP_201902
     {
         //Atributos
         protected string name;
-        protected string type;
+        protected EnumType type;
         protected string effect;
 
         //Propiedades
         public abstract string Name { get; set; }
-        public abstract string Type { get; set; }
+        public abstract EnumType Type { get; set; }
         public abstract string Effect { get; set; }
     }
 }
