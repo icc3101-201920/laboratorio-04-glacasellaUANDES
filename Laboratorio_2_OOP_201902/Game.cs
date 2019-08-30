@@ -40,11 +40,13 @@ namespace Laboratorio_2_OOP_201902
             List<Deck> decks = new List<Deck>();
             this.decks = decks;
 
+            // Agregamos dos decks nuevos a la lista de decks
             Deck deckJ1 = new Deck();
             Deck deckJ2 = new Deck();
             decks.Add(deckJ1);
             decks.Add(deckJ2);
 
+            // Creamos la lista de captainCards
             this.captainCards = new List<SpecialCard>();
 
         }
